@@ -1,0 +1,6 @@
+@ElsaWorkflowDemo.Api_HostAddress = http://localhost:5065
+
+GET {{ElsaWorkflowDemo.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
