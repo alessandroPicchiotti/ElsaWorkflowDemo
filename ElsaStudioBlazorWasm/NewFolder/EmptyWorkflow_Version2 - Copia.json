@@ -1,0 +1,18 @@
+{
+  "name": "Test Import Minimal",
+  "version": 1,
+  "isDisabled": false,
+  "root": {
+    "activities": [
+      {
+        "id": "httpStart",
+        "type": "HttpEndpoint",
+        "properties": {
+          "path": "/test",
+          "methods": [ "GET" ]
+        }
+      }
+    ],
+    "connections": []
+  }
+}

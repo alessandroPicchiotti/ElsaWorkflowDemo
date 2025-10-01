@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Elsa.Activities.UserTask" Version="2.15.2" />
+    <PackageReference Include="Elsa.Api.Client" Version="3.*" />
+    <PackageReference Include="Elsa.Studio" Version="3.*" />
+    <PackageReference Include="Elsa.Studio.Core.BlazorWasm" Version="3.*" />
+    <PackageReference Include="Elsa.Studio.Login.BlazorWasm" Version="3.*" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.20" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.20" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="NewFolder\" />
+  </ItemGroup>
+
+</Project>

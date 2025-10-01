@@ -1,0 +1,9 @@
+{
+  "name": "Test Vuoto",
+  "version": 1,
+  "isDisabled": false,
+  "root": {
+    "activities": [],
+    "connections": []
+  }
+}

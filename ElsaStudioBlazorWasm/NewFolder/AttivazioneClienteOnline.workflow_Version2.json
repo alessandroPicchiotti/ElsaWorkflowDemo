@@ -1,0 +1,108 @@
+{
+  "name": "Attivazione Cliente Online",
+  "version": 1,
+  "isDisabled": false,
+  "root": {
+    "activities": [
+      {
+        "id": "httpStart",
+        "type": "HttpEndpoint",
+        "properties": {
+          "path": "/workflows/crea-cliente",
+          "methods": ["POST"]
+        }
+      },
+      {
+        "id": "sendMail1",
+        "type": "SendEmail",
+        "properties": {
+          "to": "{clienteEmail}",
+          "subject": "Conferma la tua registrazione",
+          "body": "Clicca qui per confermare: https://tuo-sito.com/workflows/conferma-cliente?token={token}"
+        }
+      },
+      {
+        "id": "httpConfirm",
+        "type": "HttpEndpoint",
+        "properties": {
+          "path": "/workflows/conferma-cliente",
+          "methods": ["GET"]
+        }
+      },
+      {
+        "id": "parallel1",
+        "type": "Fork",
+        "outcomes": ["Pagamento", "Fido"]
+      },
+      {
+        "id": "userTaskPagamento",
+        "type": "UserTask",
+        "properties": {
+          "assignee": "utente1",
+          "prompt": "Associa tipo pagamento"
+        }
+      },
+      {
+        "id": "userTaskFido",
+        "type": "UserTask",
+        "properties": {
+          "assignee": "utente1",
+          "prompt": "Definisci fido"
+        }
+      },
+      {
+        "id": "joinParallel",
+        "type": "Join",
+        "properties": {
+          "mode": "WaitAll"
+        }
+      },
+      {
+        "id": "sendMail2",
+        "type": "SendEmail",
+        "properties": {
+          "to": "utente2@email.com",
+          "subject": "Associa listino",
+          "body": "È il tuo turno! Associa un listino al cliente."
+        }
+      },
+      {
+        "id": "userTaskListino",
+        "type": "UserTask",
+        "properties": {
+          "assignee": "utente2",
+          "prompt": "Associa listino"
+        }
+      },
+      {
+        "id": "sendMail3",
+        "type": "SendEmail",
+        "properties": {
+          "to": "utente3@email.com",
+          "subject": "Attivazione completata",
+          "body": "Il cliente è stato attivato con successo."
+        }
+      },
+      {
+        "id": "setActivated",
+        "type": "Script",
+        "properties": {
+          "script": "db.Clienti.update({id: input.clienteId}, {attivo: true})"
+        }
+      }
+    ],
+    "connections": [
+      {"sourceActivityId": "httpStart", "targetActivityId": "sendMail1"},
+      {"sourceActivityId": "sendMail1", "targetActivityId": "httpConfirm"},
+      {"sourceActivityId": "httpConfirm", "targetActivityId": "parallel1"},
+      {"sourceActivityId": "parallel1", "targetActivityId": "userTaskPagamento", "outcome": "Pagamento"},
+      {"sourceActivityId": "parallel1", "targetActivityId": "userTaskFido", "outcome": "Fido"},
+      {"sourceActivityId": "userTaskPagamento", "targetActivityId": "joinParallel"},
+      {"sourceActivityId": "userTaskFido", "targetActivityId": "joinParallel"},
+      {"sourceActivityId": "joinParallel", "targetActivityId": "sendMail2"},
+      {"sourceActivityId": "sendMail2", "targetActivityId": "userTaskListino"},
+      {"sourceActivityId": "userTaskListino", "targetActivityId": "sendMail3"},
+      {"sourceActivityId": "sendMail3", "targetActivityId": "setActivated"}
+    ]
+  }
+}
